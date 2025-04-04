@@ -1,0 +1,30 @@
+
+services:
+  grafana-dev:
+    # Build the image from Dockerfile.dev in the current directory (.)
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        # You can override these versions here if needed, matching Dockerfile.dev defaults
+        GO_VERSION: 1.24.2 # Ensure this matches Grafana's requirements
+        NODE_MAJOR: 18  # Ensure this matches Grafana's requirements
+    image: grafana-dev-env # Give the built image a name
+    container_name: grafana-dev-container
+    # Mount the current directory (your Grafana source) into /grafana in the container
+    volumes:
+      - .:/grafana
+      # Optional: Mount volumes for caches to speed up subsequent builds
+      - go-pkg-cache:/go/pkg
+      - yarn-cache:/usr/local/share/.cache/yarn/v6 # Adjust if Yarn cache path differs
+    # Expose the Grafana port
+    ports:
+      - "3000:3000"
+    # Keep the container running (using the CMD from Dockerfile.dev)
+    # Add environment variables if needed for Grafana runtime or build
+    # environment:
+    #   - GF_LOG_LEVEL=debug
+
+volumes:
+  go-pkg-cache:
+  yarn-cache:

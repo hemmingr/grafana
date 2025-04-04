@@ -1,0 +1,181 @@
+# Stage 1: Builder - Build Grafana from the current source code state
+#-------------------------------------------------------------------------------
+# Use the SAME Go version required by your Grafana source code
+ARG GO_VERSION=1.24
+FROM golang:${GO_VERSION}-bookworm as builder
+
+WORKDIR /src
+
+# Install build dependencies (same as Dockerfile.dev)
+ARG NODE_MAJOR=18
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    git \
+    make \
+    build-essential \
+    ca-certificates curl gnupg && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install -y nodejs && \
+    npm install -g yarn && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set CGO_ENABLED=1
+ENV CGO_ENABLED=1
+
+# Copy the entire source code from the host build context into the builder stage
+# IMPORTANT: Ensure you have a .dockerignore file to avoid copying unnecessary files!
+COPY . .
+
+# Install frontend dependencies using the lockfile
+# Use --immutable for Yarn Berry (v2+)
+RUN yarn install --immutable
+
+# Build the Go backend
+RUN make build-go
+
+# Build the frontend assets
+RUN yarn build
+
+
+# Stage 2: Final Runtime Image - Minimal and clean
+#-------------------------------------------------------------------------------
+    FROM debian:bookworm-slim
+    
+    RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
+
+    WORKDIR /usr/share/grafana
+    # ... rest of Stage 2 ...
+
+    WORKDIR /usr/share/grafana
+    
+    # Define standard Grafana paths and user ID
+    ENV GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
+        GF_PATHS_DATA="/var/lib/grafana" \
+        GF_PATHS_HOME="/usr/share/grafana" \
+        GF_PATHS_LOGS="/var/log/grafana" \
+        GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
+        GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
+    ARG GF_UID="472"
+    ARG GF_GID="0" # root group simplifies volume permissions
+    
+    # Create Grafana user and directories, assign user to existing GID 0 (root)
+    RUN useradd --system --uid ${GF_UID} --gid ${GF_GID} --no-log-init --home-dir "$GF_PATHS_DATA" --shell /bin/false grafana && \
+        mkdir -p "$GF_PATHS_PROVISIONING/datasources" \
+                 "$GF_PATHS_PROVISIONING/dashboards" \
+                 "$GF_PATHS_PROVISIONING/notifiers" \
+                 "$GF_PATHS_PROVISIONING/plugins" \
+                 "$GF_PATHS_LOGS" \
+                 "$GF_PATHS_PLUGINS" \
+                 "$GF_PATHS_DATA" \
+                 /etc/grafana && \
+        chown -R grafana:${GF_GID} /etc/grafana "$GF_PATHS_DATA" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING" && \
+        chown -R grafana:${GF_GID} /usr/share/grafana && \
+        chmod -R 777 "$GF_PATHS_DATA" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING" # Make writable
+    
+    # Copy ONLY the necessary built artifacts from the builder stage
+    COPY --from=builder --chown=grafana:${GF_GID} /src/bin/linux-amd64/ /usr/share/grafana/bin/
+    COPY --from=builder --chown=grafana:${GF_GID} /src/public/ /usr/share/grafana/public/
+    COPY --from=builder --chown=grafana:${GF_GID} /src/conf/ /usr/share/grafana/conf/
+    
+# --- Start of Modifications v0.6 ---
+
+# Copy Views (containing index.html) from Builder
+# This seems necessary as index.html wasn't found directly under public
+COPY --from=builder --chown=grafana:${GF_GID} /src/public/views /usr/share/grafana/public/views
+
+
+# WARNING: Modifying built files directly is highly discouraged and brittle.
+# Modify JS files (v0.7 - Process file by file for better debugging)
+RUN echo "v0.7: Attempting SED modifications on .js files (file-by-file)..." && \
+    find /usr/share/grafana/public/build -maxdepth 1 -type f \
+        \( \
+          -name 'app.*.js' -o \
+          -name 'grafana.*.js' -o \
+          -name 'runtime.*.js' -o \
+          -name '*.chunk.js' -o \
+          -name '6405.*.js' -o \
+          -name 'welcomeBanner.*.js' -o \
+          -name 'gettingStartedPanel.*.js' \
+        \) \
+        -print -exec sh -c ' \
+            file="$1"; \
+            echo "Processing JS file: $file"; \
+            # Attempt replacements
+            sed -i \
+                -e "s|Welcome to Grafana|CorpoLake|g" \
+                -e "s|AppTitle=\\\"Grafana\\\"|AppTitle=\\\"CorpoLake\\\"|g" \
+                "$file"; \
+            # Verify *this specific file*
+            if grep -q -F "Welcome to Grafana" "$file"; then \
+                echo "VERIFICATION FAILED for $file: String still found!"; \
+                exit 1; \
+            else \
+                echo "Verification passed for $file."; \
+            fi \
+        ' sh {} \; && \
+    echo "v0.7: SED modifications on .js files completed successfully." || \
+    ( echo "ERROR: v0.7 SED modification or verification failed for one or more JS files." && exit 1 )
+
+# Modify index.html for Browser Tab Title (Targeting correct path)
+RUN echo "v0.6: Attempting SED modification on index.html..." && \
+    INDEX_PATH="/usr/share/grafana/public/views/index.html" && \
+    if [ -f "$INDEX_PATH" ]; then \
+        # Replace title tag content
+        sed -i 's|<title>Grafana</title>|<title>DevOps</title>|g' "$INDEX_PATH" && \
+        # Replace AppTitle attribute if it exists in index.html
+        sed -i 's|AppTitle="Grafana"|AppTitle="CorpoLake"|g' "$INDEX_PATH" && \
+        echo "Processed $INDEX_PATH"; \
+    else \
+        echo "WARNING: $INDEX_PATH not found, skipping title modification."; \
+    fi
+
+
+# Modify Email Template(s) (Targeting correct path under public)
+RUN echo "v0.6: Attempting SED modification on email templates..." && \
+    EMAIL_DIR="/usr/share/grafana/public/emails" && \
+    if [ -d "$EMAIL_DIR" ]; then \
+        find "$EMAIL_DIR" -type f \( -name '*.html' -o -name '*.txt' \) -print -exec \
+            sed -i \
+              # Specific phrases
+              -e 's|Welcome to Grafana, please complete your sign up|Welcome to CorpoLake, please complete your sign up|g' \
+              # General welcome
+              -e 's|Welcome to Grafana|Welcome to CorpoLake|g' \
+              # Potential HTML tags or titles
+              -e 's|>Grafana<|>CorpoLake<|g' \
+              # Specific features
+              -e 's|Grafana Teams|CorpoLake Teams|g' \
+            {} + && \
+        echo "Processed email templates."; \
+    else \
+        echo "WARNING: Email directory $EMAIL_DIR not found."; \
+    fi
+
+
+# Copy custom icons
+COPY corporater/corporater_logo.svg /usr/share/grafana/public/img/grafana_icon.svg
+COPY corporater/fav32.png /usr/share/grafana/public/img/fav32.png
+COPY corporater/fav32.png /usr/share/grafana/public/img/apple-touch-icon.png
+
+# --- End of Modifications v0.6 ---
+    
+    EXPOSE 3000
+    
+    USER grafana
+    
+    # Entrypoint should just be the command
+    ENTRYPOINT [ "/usr/share/grafana/bin/grafana" ]
+    
+    # CMD provides the subcommand 'server' and default arguments
+    CMD [ \
+      "server", \
+      "--homepath=/usr/share/grafana", \
+      # Let Grafana load config from default location unless overridden
+      # "--config=${GF_PATHS_CONFIG}", \ # Removing explicit default so -config flag works if needed later
+      "cfg:default.paths.data=${GF_PATHS_DATA}", \
+      "cfg:default.paths.logs=${GF_PATHS_LOGS}", \
+      "cfg:default.paths.plugins=${GF_PATHS_PLUGINS}", \
+      "cfg:default.paths.provisioning=${GF_PATHS_PROVISIONING}" \
+    ]
