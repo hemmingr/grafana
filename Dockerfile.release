@@ -96,7 +96,7 @@ RUN echo "v0.7: Attempting SED modifications on .js files (file-by-file)..." && 
           -name 'grafana.*.js' -o \
           -name 'runtime.*.js' -o \
           -name '*.chunk.js' -o \
-          -name '6405.*.js' -o \
+          -name '8361.*.js' -o \
           -name 'welcomeBanner.*.js' -o \
           -name 'gettingStartedPanel.*.js' \
         \) \
