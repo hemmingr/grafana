@@ -219,11 +219,6 @@ export interface FeatureToggles {
   */
   mlExpressions?: boolean;
   /**
-  * Enables response streaming of TraceQL queries of the Tempo data source
-  * @default false
-  */
-  traceQLStreaming?: boolean;
-  /**
   * Expose some datasources as apiservers.
   */
   datasourceAPIServers?: boolean;
@@ -1031,6 +1026,11 @@ export interface FeatureToggles {
   * Enables localization for plugins
   */
   localizationForPlugins?: boolean;
+  /**
+  * Enables unified navbars
+  * @default false
+  */
+  unifiedNavbars?: boolean;
   /**
   * Enables a control component for the logs panel in Explore
   * @default false

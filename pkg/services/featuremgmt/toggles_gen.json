@@ -3031,7 +3031,8 @@
       "metadata": {
         "name": "traceQLStreaming",
         "resourceVersion": "1743693517832",
-        "creationTimestamp": "2023-07-26T13:33:16Z"
+        "creationTimestamp": "2023-07-26T13:33:16Z",
+        "deletionTimestamp": "2025-04-08T12:39:36Z"
       },
       "spec": {
         "description": "Enables response streaming of TraceQL queries of the Tempo data source",
@@ -3067,6 +3068,23 @@
         "stage": "experimental",
         "codeowner": "@grafana/grafana-frontend-platform",
         "frontend": true
+      }
+    },
+    {
+      "metadata": {
+        "name": "unifiedNavbars",
+        "resourceVersion": "1744174965165",
+        "creationTimestamp": "2025-04-05T06:53:21Z",
+        "annotations": {
+          "grafana.app/updatedTimestamp": "2025-04-09 05:02:45.165634 +0000 UTC"
+        }
+      },
+      "spec": {
+        "description": "Enables unified navbars",
+        "stage": "GA",
+        "codeowner": "@grafana/plugins-platform-backend",
+        "frontend": true,
+        "expression": "false"
       }
     },
     {
