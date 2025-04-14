@@ -1,0 +1,31 @@
+# apiVersion: 1 # Starting Grafana v10, apiVersion is deprecated for datasources & dashboards
+# deleteDatasources: # Optional: uncomment to remove sources defined in UI
+#   - name: MySQL-Old
+#     orgId: 1
+
+datasources:
+  - name: 'DevLake MySQL DB' # Choose a descriptive name for Grafana UI
+    type: mysql
+    # URL format: host:port
+    url: ${GF_MYSQL_DATASOURCE_HOST}:${GF_MYSQL_DATASOURCE_PORT}
+    database: ${GF_MYSQL_DATASOURCE_DBNAME} # Database to connect to
+    user: ${GF_MYSQL_DATASOURCE_USER}     # Username for the connection
+    # secureJsonData is used for secrets Grafana encrypts internally
+    secureJsonData:
+      password: ${GF_MYSQL_DATASOURCE_PASSWORD} # Password for the connection
+    jsonData:
+      # Adjust connection pool settings as needed
+      maxOpenConns: 10
+      maxIdleConns: 10
+      connMaxLifetime: 14400 # seconds (4 hours)
+      # Add other specific MySQL settings if needed (e.g., timescaledb: true)
+      # tlsAuth: false
+      # tlsSkipVerify: true
+    # Optional: uid for linking dashboards etc. Generate one if needed.
+      uid: 'mysql-devlake-01'
+    # Optional: Make this the default datasource for MySQL type queries
+      isDefault: true
+    # Optional: Specify version if needed (usually auto-detected)
+    # version: 1
+    # Optional: Prevent UI edits
+      editable: false

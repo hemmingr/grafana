@@ -159,6 +159,9 @@ COPY corporater/corporater_logo.svg /usr/share/grafana/public/img/grafana_icon.s
 COPY corporater/fav32.png /usr/share/grafana/public/img/fav32.png
 COPY corporater/fav32.png /usr/share/grafana/public/img/apple-touch-icon.png
 
+
+COPY --chown=grafana:${GF_GID} mysql-datasource.yaml /etc/grafana/provisioning/datasources/mysql-datasource.yaml
+
 # --- End of Modifications v0.6 ---
     
     EXPOSE 3000
