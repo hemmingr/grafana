@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: 'Jira JSM - Infinity'
+    type: yesoreyeram-infinity-datasource
+    uid: 'infinity-jira-jsm-01'
+    access: proxy
+    jsonData:
+      authenticationMethod: basicAuth
+      url: $JIRA_BASE_URL
+      timeoutInSeconds: 30
+      defaultParser: 'JSON'
+    secureJsonData:
+      basicAuthUser: $JIRA_USERNAME
+      basicAuthPassword: $JIRA_API_KEY
