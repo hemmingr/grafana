@@ -21,7 +21,7 @@ permissions: {}
 
 jobs:
   grafana:
-    # Run this workflow only for PRs from forks; if it gets merged into `main` or `release-*`, 
+    # Run this workflow only for PRs from forks; if it gets merged into `main` or `release-*`,
     # the `pr-backend-unit-tests-enterprise` workflow will run instead
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true
     name: Grafana
@@ -42,7 +42,7 @@ jobs:
       - name: Generate Go code
         run: make gen-go
       - name: Run unit tests
-        run: make test-go-unit
+        run: make test-go-unit GO_TEST_OUTPUT="| tee >(go-junit-report -set-exit-code > \"$(date --rfc-3339=seconds --utc | sed -s 's/ /-/g')_1.xml\")
 
   grafana-enterprise:
     # Run this workflow for non-PR events (like pushes to `main` or `release-*`) OR for internal PRs (PRs not from forks)
@@ -68,4 +68,4 @@ jobs:
       - name: Generate Go code
         run: make gen-go
       - name: Run unit tests
-        run: make test-go-unit
+        run: make test-go-unit GO_TEST_OUTPUT="| tee >(go-junit-report -set-exit-code > \"$(date --rfc-3339=seconds --utc | sed -s 's/ /-/g')_1.xml\")
