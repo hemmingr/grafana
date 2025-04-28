@@ -38,6 +38,7 @@ export const LogLine = ({
   log,
   style,
   styles,
+  onClick,
   onOverflow,
   showTime,
   variant,
@@ -70,12 +71,17 @@ export const LogLine = ({
     onOverflow?.(index, log.uid);
   }, [collapsed, index, log, onOverflow]);
 
+  const handleClick = useCallback(() => {
+    onClick(log);
+  }, [log, onClick]);
+
   return (
     <div style={style}>
       <div
         className={`${styles.logLine} ${variant ?? ''} ${pinned ? styles.pinnedLogLine : ''}`}
         ref={onOverflow ? logLineRef : undefined}
         onMouseEnter={handleMouseOver}
+        onClick={handleClick}
       >
         <LogLineMenu styles={styles} log={log} />
         <div
