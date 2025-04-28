@@ -33,6 +33,7 @@ export interface Props extends Themeable2 {
 
   onPinLine?: (row: LogRowModel) => void;
   pinLineButtonTooltipTitle?: PopoverContent;
+  noLevel?: boolean;
 }
 
 class UnThemedLogDetails extends PureComponent<Props> {
@@ -55,6 +56,7 @@ class UnThemedLogDetails extends PureComponent<Props> {
       onPinLine,
       styles,
       pinLineButtonTooltipTitle,
+      noLevel,
     } = this.props;
     const levelStyles = getLogLevelStyles(theme, row.logLevel);
     const labels = row.labels ? row.labels : {};
@@ -84,7 +86,12 @@ class UnThemedLogDetails extends PureComponent<Props> {
     return (
       <tr className={cx(className, styles.logDetails)}>
         {showDuplicates && <td />}
-        <td className={levelClassName} aria-label={t('logs.un-themed-log-details.aria-label-log-level', 'Log level')} />
+        {!noLevel && (
+          <td
+            className={levelClassName}
+            aria-label={t('logs.un-themed-log-details.aria-label-log-level', 'Log level')}
+          />
+        )}
         <td colSpan={4}>
           <div className={styles.logDetailsContainer}>
             <table className={styles.logDetailsTable}>
