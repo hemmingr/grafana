@@ -49,4 +49,3 @@ To build `grafanactl` from source you must:
 ```bash
 go install github.com/grafana/grafanactl/cmd/grafanactl@latest
 ```
-
