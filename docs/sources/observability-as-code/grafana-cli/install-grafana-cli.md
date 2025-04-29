@@ -23,7 +23,7 @@ weight: 100
 
 # Install Grafana CLI
 
-You can install the project using one of the following supported methods:
+You can install the command line using one of the following supported methods:
 
 ## 1. Download a pre-built binary
 
@@ -49,3 +49,4 @@ To build `grafanactl` from source you must:
 ```bash
 go install github.com/grafana/grafanactl/cmd/grafanactl@latest
 ```
+
