@@ -260,7 +260,7 @@ module.exports = [
       react: reactPlugin,
       '@grafana': grafanaPlugin,
     },
-    files: ['public/app/features/alerting/**/*.{ts,tsx,js,jsx}'],
+    files: ['public/app/features/alerting/**/*.{ts,tsx,js,jsx}', 'packages/grafana-alerting/**/*.{ts,tsx,js,jsx}'],
     rules: {
       'sort-imports': ['error', { ignoreDeclarationSort: true }],
       'dot-notation': 'error',
@@ -270,6 +270,24 @@ module.exports = [
       'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
       'unicorn/no-unused-properties': 'error',
       'no-nested-ternary': 'error',
+    },
+  },
+  {
+    name: 'grafana/alerting-test-overrides',
+    plugins: {
+      'testing-library': testingLibraryPlugin,
+      'jest-dom': jestDomPlugin,
+    },
+    files: [
+      'public/app/features/alerting/**/__tests__/**/*.[jt]s?(x)',
+      'public/app/features/alerting/**/*.{test,spec}.{ts,tsx}',
+      'packages/grafana-alerting/**/*.{test,spec}.{ts,tsx}',
+    ],
+    rules: {
+      ...testingLibraryPlugin.configs['flat/react'].rules,
+      ...jestDomPlugin.configs['flat/recommended'].rules,
+      'testing-library/prefer-user-event': 'error',
+      'jest/expect-expect': ['error', { assertFunctionNames: ['expect*', 'reducerTester'] }],
     },
   },
   {
@@ -291,23 +309,6 @@ module.exports = [
     rules: {
       '@grafana/no-untranslated-strings': 'error',
       '@grafana/no-translation-top-level': 'error',
-    },
-  },
-  {
-    name: 'grafana/alerting-test-overrides',
-    plugins: {
-      'testing-library': testingLibraryPlugin,
-      'jest-dom': jestDomPlugin,
-    },
-    files: [
-      'public/app/features/alerting/**/__tests__/**/*.[jt]s?(x)',
-      'public/app/features/alerting/**/?(*.)+(spec|test).[jt]s?(x)',
-    ],
-    rules: {
-      ...testingLibraryPlugin.configs['flat/react'].rules,
-      ...jestDomPlugin.configs['flat/recommended'].rules,
-      'testing-library/prefer-user-event': 'error',
-      'jest/expect-expect': ['error', { assertFunctionNames: ['expect*', 'reducerTester'] }],
     },
   },
   {
