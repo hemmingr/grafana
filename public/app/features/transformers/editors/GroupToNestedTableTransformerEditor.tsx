@@ -137,6 +137,7 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
       onConfigChange({
         aggregations: config?.aggregations ?? [],
         operation: value?.value ?? null,
+        keepContentsOfRow: false,
       });
     },
     [config, onConfigChange]

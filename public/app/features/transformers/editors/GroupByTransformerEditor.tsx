@@ -12,7 +12,7 @@ import {
   GrafanaTheme2,
 } from '@grafana/data';
 import { GroupByFieldOptions, GroupByOperationID, GroupByTransformerOptions } from '@grafana/data/internal';
-import { useTheme2, Select, StatsPicker, InlineField, Stack, Alert } from '@grafana/ui';
+import { useTheme2, Select, StatsPicker, InlineField, Stack, Alert, Checkbox } from '@grafana/ui';
 import { t } from 'app/core/internationalization';
 
 import { getTransformationContent } from '../docs/getTransformationContent';
@@ -23,6 +23,17 @@ interface FieldProps {
   config?: GroupByFieldOptions;
   onConfigChange: (config: GroupByFieldOptions) => void;
 }
+
+// If a calculation is done with only one reducer that will not aggregate the value with others, we want
+const nonMutatingReducers = [
+  ReducerID.first,
+  ReducerID.firstNotNull,
+  ReducerID.last,
+  ReducerID.lastNotNull,
+  ReducerID.min,
+  ReducerID.logmin,
+  ReducerID.max,
+];
 
 export const GroupByTransformerEditor = ({
   input,
@@ -100,6 +111,7 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
       onConfigChange({
         aggregations: config?.aggregations ?? [],
         operation: value?.value ?? null,
+        keepContentsOfRow: config?.keepContentsOfRow ?? false,
       });
     },
     [config, onConfigChange]
@@ -119,15 +131,29 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
         </div>
 
         {config?.operation === GroupByOperationID.aggregate && (
-          <StatsPicker
-            className={styles.aggregations}
-            placeholder={t('transformers.group-by-field-configuration.placeholder-select-stats', 'Select stats')}
-            allowMultiple
-            stats={config.aggregations}
-            onChange={(stats) => {
-              onConfigChange({ ...config, aggregations: stats as ReducerID[] });
-            }}
-          />
+          <>
+            <StatsPicker
+              className={styles.aggregations}
+              placeholder={t('transformers.group-by-field-configuration.placeholder-select-stats', 'Select stats')}
+              allowMultiple
+              stats={config.aggregations}
+              onChange={(stats) => {
+                onConfigChange({ ...config, aggregations: stats as ReducerID[] });
+              }}
+            />
+            {config.aggregations.length === 1 && nonMutatingReducers.includes(config.aggregations[0]) && (
+              <Checkbox
+                value={config.keepContentsOfRow ?? false}
+                label={t(
+                  'transformers.group-by-field-configuration.label-include-contents-of-row',
+                  'Include contents of row'
+                )}
+                onChange={(e) => {
+                  onConfigChange({ ...config, keepContentsOfRow: e.currentTarget.checked });
+                }}
+              />
+            )}
+          </>
         )}
       </Stack>
     </InlineField>

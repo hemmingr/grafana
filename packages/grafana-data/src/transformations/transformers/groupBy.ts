@@ -20,6 +20,7 @@ export enum GroupByOperationID {
 export interface GroupByFieldOptions {
   aggregations: ReducerID[];
   operation: GroupByOperationID | null;
+  keepContentsOfRow: boolean;
 }
 
 export interface GroupByTransformerOptions {
@@ -93,7 +94,7 @@ export const groupByTransformer: DataTransformerInfo<GroupByTransformerOptions> 
           const valuesByGroupKey = groupValuesByKey(frame, groupByFields);
 
           // Add the grouped fields to the resulting fields of the transformation
-          const fields: Field[] = createGroupedFields(groupByFields, valuesByGroupKey);
+          let fields: Field[] = createGroupedFields(groupByFields, valuesByGroupKey);
 
           // Then for each calculations configured, compute and add a new field (column)
           for (const field of frame.fields) {
@@ -103,7 +104,19 @@ export const groupByTransformer: DataTransformerInfo<GroupByTransformerOptions> 
 
             const fieldName = getFieldDisplayName(field);
             const aggregations = options.fields[fieldName].aggregations;
+            const keepContentsOfRow = options.fields[fieldName].keepContentsOfRow;
             const valuesByAggregation: Record<string, unknown[]> = {};
+            let rowContents: Field[] = [];
+
+            if (keepContentsOfRow) {
+              // add in other rows, but clear the values
+              rowContents = frame.fields
+                .filter((f) => !groupByFieldNames.includes(f.name) && f.name !== fieldName) // TODO : MAKE NOT BAD
+                .map((f) => {
+                  return { ...f, values: [] };
+                });
+              fields = fields.concat(rowContents);
+            }
 
             valuesByGroupKey.forEach((value) => {
               const fieldWithValuesForGroup = value[fieldName];
@@ -117,6 +130,31 @@ export const groupByTransformer: DataTransformerInfo<GroupByTransformerOptions> 
                   valuesByAggregation[aggregation] = [];
                 }
                 valuesByAggregation[aggregation].push(results[aggregation]);
+
+                if (keepContentsOfRow) {
+                  let rowIdx = undefined;
+                  if (aggregation === ReducerID.first) {
+                    rowIdx = results.firstIdx;
+                  } else if (aggregation === ReducerID.firstNotNull) {
+                    rowIdx = results.firstNotNullIdx;
+                  } else if (aggregation === ReducerID.last) {
+                    rowIdx = results.lastIdx;
+                  } else if (aggregation === ReducerID.lastNotNull) {
+                    rowIdx = results.lastNotNullIdx;
+                  } else if (aggregation === ReducerID.min) {
+                    rowIdx = results.minIdx;
+                  } else if (aggregation === ReducerID.logmin) {
+                    rowIdx = results.logminIdx;
+                  } else if (aggregation === ReducerID.max) {
+                    rowIdx = results.maxIdx;
+                  }
+
+                  rowContents.forEach((field) => {
+                    const rowContentField = fields.find((f) => f.name === field.name)!; // TODO : MAKE NOT BAD
+                    const frameField = frame.fields.find((f) => f.name === field.name)!;
+                    rowContentField.values.push(frameField.values[rowIdx]);
+                  });
+                }
               }
             });
 

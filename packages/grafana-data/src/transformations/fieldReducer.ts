@@ -491,9 +491,11 @@ export function doStandardCalcs(field: Field, ignoreNulls: boolean, nullAsZero: 
 
     if (i === 0) {
       calcs.first = currentValue;
+      calcs.firstIdx = i;
     }
 
     calcs.last = currentValue;
+    calcs.lastIdx = i;
 
     if (currentValue == null) {
       if (ignoreNulls) {
@@ -511,6 +513,7 @@ export function doStandardCalcs(field: Field, ignoreNulls: boolean, nullAsZero: 
       const isFirst = calcs.firstNotNull === null;
       if (isFirst) {
         calcs.firstNotNull = currentValue;
+        calcs.firstNotNullIdx = i;
       }
 
       if (isNumberField) {
@@ -537,14 +540,17 @@ export function doStandardCalcs(field: Field, ignoreNulls: boolean, nullAsZero: 
 
         if (currentValue > calcs.max) {
           calcs.max = currentValue;
+          calcs.maxIdx = i;
         }
 
         if (currentValue < calcs.min) {
           calcs.min = currentValue;
+          calcs.minIdx = i;
         }
 
         if (currentValue < calcs.logmin && currentValue > 0) {
           calcs.logmin = currentValue;
+          calcs.logminIdx = i;
         }
       }
 
@@ -553,15 +559,18 @@ export function doStandardCalcs(field: Field, ignoreNulls: boolean, nullAsZero: 
       }
 
       calcs.lastNotNull = currentValue;
+      calcs.lastNotNullIdx = i;
     }
   }
 
   if (calcs.max === -Number.MAX_VALUE) {
     calcs.max = null;
+    calcs.maxIdx = undefined;
   }
 
   if (calcs.min === Number.MAX_VALUE) {
     calcs.min = null;
+    calcs.minIdx = undefined;
   }
 
   if (calcs.step === Number.MAX_VALUE) {
