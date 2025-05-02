@@ -152,6 +152,7 @@ export interface FieldReducerInfo extends RegistryItem {
   standard: boolean; // The most common stats can all be calculated in a single pass
   preservesUnits: boolean; // Whether this reducer preserves units, certain ones don't e.g. count, distinct count, etc,
   reduce?: FieldReducer;
+  returnsUnmodifiedValue: boolean;
 }
 
 interface ReduceFieldOptions {
@@ -252,6 +253,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     aliasIds: ['current'],
     reduce: calculateLastNotNull,
     preservesUnits: true,
+    returnsUnmodifiedValue: true,
   },
   {
     id: ReducerID.last,
@@ -260,6 +262,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: true,
     reduce: calculateLast,
     preservesUnits: true,
+    returnsUnmodifiedValue: true,
   },
   {
     id: ReducerID.firstNotNull,
@@ -268,6 +271,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: true,
     reduce: calculateFirstNotNull,
     preservesUnits: true,
+    returnsUnmodifiedValue: true,
   },
   {
     id: ReducerID.first,
@@ -276,9 +280,24 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: true,
     reduce: calculateFirst,
     preservesUnits: true,
+    returnsUnmodifiedValue: true,
   },
-  { id: ReducerID.min, name: 'Min', description: 'Minimum Value', standard: true, preservesUnits: true },
-  { id: ReducerID.max, name: 'Max', description: 'Maximum Value', standard: true, preservesUnits: true },
+  {
+    id: ReducerID.min,
+    name: 'Min',
+    description: 'Minimum Value',
+    standard: true,
+    preservesUnits: true,
+    returnsUnmodifiedValue: true,
+  },
+  {
+    id: ReducerID.max,
+    name: 'Max',
+    description: 'Maximum Value',
+    standard: true,
+    preservesUnits: true,
+    returnsUnmodifiedValue: true,
+  },
   {
     id: ReducerID.mean,
     name: 'Mean',
@@ -286,6 +305,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: true,
     aliasIds: ['avg'],
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.median,
@@ -295,6 +315,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     reduce: calculateMedian,
     aliasIds: ['median'],
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.variance,
@@ -303,6 +324,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: false,
     reduce: calculateStdDev,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.stdDev,
@@ -311,6 +333,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: false,
     reduce: calculateStdDev,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.sum,
@@ -320,6 +343,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: true,
     aliasIds: ['total'],
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.count,
@@ -328,6 +352,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     emptyInputResult: 0,
     standard: true,
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.range,
@@ -335,6 +360,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Difference between minimum and maximum values',
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.delta,
@@ -342,6 +368,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Cumulative change in value',
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.step,
@@ -349,6 +376,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Minimum interval between values',
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.diff,
@@ -356,6 +384,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Difference between first and last values',
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.logmin,
@@ -363,6 +392,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Used for log min scale',
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: true,
   },
   {
     id: ReducerID.allIsZero,
@@ -371,6 +401,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     emptyInputResult: false,
     standard: true,
     preservesUnits: true,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.allIsNull,
@@ -379,6 +410,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     emptyInputResult: true,
     standard: true,
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.changeCount,
@@ -387,6 +419,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: false,
     reduce: calculateChangeCount,
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.distinctCount,
@@ -395,6 +428,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: false,
     reduce: calculateDistinctCount,
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.diffperc,
@@ -402,6 +436,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     description: 'Percentage difference between first and last values',
     standard: true,
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.allValues,
@@ -410,6 +445,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
     standard: false,
     reduce: (field: Field) => ({ allValues: [...field.values] }),
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   {
     id: ReducerID.uniqueValues,
@@ -420,6 +456,7 @@ export const fieldReducers = new Registry<FieldReducerInfo>(() => [
       uniqueValues: [...new Set(field.values)],
     }),
     preservesUnits: false,
+    returnsUnmodifiedValue: false,
   },
   ...buildPercentileReducers(),
 ]);
@@ -445,6 +482,7 @@ const buildPercentileReducers = (percentiles = [...Array.from({ length: 99 }, (_
         return { [id]: calculatePercentile(field, percentile, ignoreNulls, nullAsZero) };
       },
       preservesUnits: true,
+      returnsUnmodifiedValue: false,
     });
   });
   return percentileReducers;
@@ -601,7 +639,7 @@ export function doStandardCalcs(field: Field, ignoreNulls: boolean, nullAsZero: 
 }
 
 function calculateFirst(field: Field, ignoreNulls: boolean, nullAsZero: boolean): FieldCalcs {
-  return { first: field.values[0] };
+  return { first: field.values[0], firstIdx: 0 };
 }
 
 function calculateFirstNotNull(field: Field, ignoreNulls: boolean, nullAsZero: boolean): FieldCalcs {
@@ -609,15 +647,15 @@ function calculateFirstNotNull(field: Field, ignoreNulls: boolean, nullAsZero: b
   for (let idx = 0; idx < data.length; idx++) {
     const v = data[idx];
     if (v != null && !Number.isNaN(v)) {
-      return { firstNotNull: v };
+      return { firstNotNull: v, firstNotNullIdx: idx };
     }
   }
-  return { firstNotNull: null };
+  return { firstNotNull: null, firstNotNullIdx: undefined };
 }
 
 function calculateLast(field: Field, ignoreNulls: boolean, nullAsZero: boolean): FieldCalcs {
   const data = field.values;
-  return { last: data[data.length - 1] };
+  return { last: data[data.length - 1], lastIdx: data.length - 1 };
 }
 
 function calculateLastNotNull(field: Field, ignoreNulls: boolean, nullAsZero: boolean): FieldCalcs {
@@ -626,10 +664,10 @@ function calculateLastNotNull(field: Field, ignoreNulls: boolean, nullAsZero: bo
   while (idx >= 0) {
     const v = data[idx--];
     if (v != null && !Number.isNaN(v)) {
-      return { lastNotNull: v };
+      return { lastNotNull: v, lastNotNullIdx: idx };
     }
   }
-  return { lastNotNull: null };
+  return { lastNotNull: null, lastNotNullIdx: undefined };
 }
 
 /** Calculates standard deviation and variance */

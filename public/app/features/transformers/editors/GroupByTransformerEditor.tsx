@@ -10,6 +10,7 @@ import {
   TransformerUIProps,
   TransformerCategory,
   GrafanaTheme2,
+  fieldReducers,
 } from '@grafana/data';
 import { GroupByFieldOptions, GroupByOperationID, GroupByTransformerOptions } from '@grafana/data/internal';
 import { useTheme2, Select, StatsPicker, InlineField, Stack, Alert, Checkbox } from '@grafana/ui';
@@ -23,17 +24,6 @@ interface FieldProps {
   config?: GroupByFieldOptions;
   onConfigChange: (config: GroupByFieldOptions) => void;
 }
-
-// If a calculation is done with only one reducer that will not aggregate the value with others, we want
-const nonMutatingReducers = [
-  ReducerID.first,
-  ReducerID.firstNotNull,
-  ReducerID.last,
-  ReducerID.lastNotNull,
-  ReducerID.min,
-  ReducerID.logmin,
-  ReducerID.max,
-];
 
 export const GroupByTransformerEditor = ({
   input,
@@ -141,7 +131,7 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
                 onConfigChange({ ...config, aggregations: stats as ReducerID[] });
               }}
             />
-            {config.aggregations.length === 1 && nonMutatingReducers.includes(config.aggregations[0]) && (
+            {config.aggregations.length === 1 && fieldReducers.get(config?.aggregations[0]).returnsUnmodifiedValue && (
               <Checkbox
                 value={config.keepContentsOfRow ?? false}
                 label={t(
