@@ -121,7 +121,7 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
         </div>
 
         {config?.operation === GroupByOperationID.aggregate && (
-          <>
+          <Stack gap={0.5} direction="column" grow={1}>
             <StatsPicker
               className={styles.aggregations}
               placeholder={t('transformers.group-by-field-configuration.placeholder-select-stats', 'Select stats')}
@@ -143,7 +143,7 @@ export const GroupByFieldConfiguration = ({ fieldName, config, onConfigChange }:
                 }}
               />
             )}
-          </>
+          </Stack>
         )}
       </Stack>
     </InlineField>
