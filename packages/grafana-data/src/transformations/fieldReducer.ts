@@ -664,7 +664,7 @@ function calculateLastNotNull(field: Field, ignoreNulls: boolean, nullAsZero: bo
   while (idx >= 0) {
     const v = data[idx--];
     if (v != null && !Number.isNaN(v)) {
-      return { lastNotNull: v, lastNotNullIdx: idx };
+      return { lastNotNull: v, lastNotNullIdx: idx + 1 };
     }
   }
   return { lastNotNull: null, lastNotNullIdx: undefined };
