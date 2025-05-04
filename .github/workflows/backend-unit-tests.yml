@@ -48,7 +48,7 @@ jobs:
         if: github.event_name == 'push' && github.repository == 'grafana/grafana'
         uses: grafana/shared-workflows/actions/login-to-gcs@login-to-gcs-v0.2.0
         with:
-          service-account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
+          service_account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
           bucket: grafana-test-results
       - name: Upload test results
         if: github.event_name == 'push' && github.repository == 'grafana/grafana'
@@ -56,7 +56,8 @@ jobs:
         with:
           bucket: grafana-test-results
           glob: "*.xml"
-          environment: "dev" # Can be dev/prod (defaults to dev)
+          environment: dev
+          path: .
 
   grafana-enterprise:
     # Run this workflow for non-PR events (like pushes to `main` or `release-*`) OR for internal PRs (PRs not from forks)
@@ -84,13 +85,13 @@ jobs:
       - name: Run unit tests
         run: make test-go-unit GO_TEST_OUTPUT="| tee >(go-junit-report -set-exit-code > \"$(date --rfc-3339=seconds --utc | sed -s 's/ /-/g')_1.xml\")"
       - name: Log in to GCS
-        if: github.event_name == 'push' && github.repository == 'grafana/grafana'
+        if: github.event_name == 'push' && github.repository == 'grafana/grafana' && always()
         uses: grafana/shared-workflows/actions/login-to-gcs@login-to-gcs-v0.2.0
         with:
           service-account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
           bucket: grafana-test-results
       - name: Upload test results
-        if: github.event_name == 'push' && github.repository == 'grafana/grafana'
+        if: github.event_name == 'push' && github.repository == 'grafana/grafana' && always()
         uses: grafana/shared-workflows/actions/push-to-gcs@push-to-gcs-v0.2.0
         with:
           bucket: grafana-test-results
