@@ -67,6 +67,7 @@ jobs:
         with:
           github-app-name: 'grafana-ci-bot'
       - run: echo "RESULTS_FILE=$(date --rfc-3339=seconds --utc | sed -s 's/ /-/g')_1.xml" >> $GITHUB_ENV
+      - run: go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
       - name: Generate Go code
         run: make gen-go
       - name: Run unit tests
