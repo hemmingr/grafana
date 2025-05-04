@@ -82,5 +82,6 @@ jobs:
         uses: grafana/shared-workflows/actions/push-to-gcs@push-to-gcs-v0.2.0
         with:
           bucket: grafana-test-results
+          service-account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
           environment: "dev" # Can be dev/prod (defaults to dev)
           path: ${{ env.RESULTS_FILE }}
