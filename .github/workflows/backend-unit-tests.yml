@@ -75,11 +75,14 @@ jobs:
       - name: Log in to GCS
         if: github.event_name == 'push' && github.repository == 'grafana/grafana' && always()
         uses: grafana/shared-workflows/actions/login-to-gcs@login-to-gcs-v0.2.0
-        id: login-to-gcs
+        with:
+          service_account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
+          bucket: grafana-test-results
       - name: Upload test results
         if: github.event_name == 'push' && github.repository == 'grafana/grafana' && always()
         uses: grafana/shared-workflows/actions/push-to-gcs@push-to-gcs-v0.2.0
         with:
-          bucket: ${{ steps.login-to-gcs.outputs.bucket }}
+          bucket: grafana-test-results
+          service_account: junit-uploader@grafanalabs-dev.iam.gserviceaccount.com
           environment: "dev" # Can be dev/prod (defaults to dev)
           path: ${{ env.RESULTS_FILE }}
