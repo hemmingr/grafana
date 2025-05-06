@@ -92,6 +92,6 @@ export const language: languages.IMonarchLanguage = {
       [/\)/, 'identifier', '@pop'],
     ],
 
-    whitespace: [[/[ \t\r\n]+/, 'white']],
+    whitespace: [[/[ \t\n]+/, 'white']],
   },
 };

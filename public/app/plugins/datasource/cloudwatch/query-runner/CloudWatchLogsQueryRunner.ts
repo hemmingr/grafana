@@ -214,7 +214,7 @@ export class CloudWatchLogsQueryRunner extends CloudWatchRequest {
         // to later surround the log group names with backticks
         // this assumes there's only a single template variable used inside the [ ]
         const shouldSurroundInQuotes = query.expression
-          ?.replaceAll(/[\r\n\t\s]+/g, '')
+          ?.replaceAll(/[\n\t\s]+/g, '')
           .includes(`\`logGroups(logGroupIdentifier:[$${varName}])\``);
         if (variable && 'current' in variable && 'text' in variable.current) {
           if (Array.isArray(variable.current.text)) {

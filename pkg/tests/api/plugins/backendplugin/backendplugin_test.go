@@ -247,7 +247,7 @@ func TestIntegrationBackendPlugins(t *testing.T) {
 					Headers: map[string][]string{
 						"Content-Type": {"text/plain"},
 					},
-					Body: []byte("msg 1\r\n"),
+					Body: []byte("msg 1\n"),
 				})
 
 				if err != nil {
@@ -255,7 +255,7 @@ func TestIntegrationBackendPlugins(t *testing.T) {
 				}
 
 				return sender.Send(&backend.CallResourceResponse{
-					Body: []byte("msg 2\r\n"),
+					Body: []byte("msg 2\n"),
 				})
 			}),
 		),
@@ -266,7 +266,7 @@ func TestIntegrationBackendPlugins(t *testing.T) {
 				require.Equal(t, []string{"chunked"}, resp.TransferEncoding)
 				bytes, err := io.ReadAll(resp.Body)
 				require.NoError(t, err)
-				require.Equal(t, "msg 1\r\nmsg 2\r\n", string(bytes))
+				require.Equal(t, "msg 1\r\nmsg 2\n", string(bytes))
 			})
 		})
 

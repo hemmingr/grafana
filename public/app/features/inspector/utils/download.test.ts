@@ -54,7 +54,7 @@ describe('inspector download', () => {
       const text = await blob.text();
 
       expect(await hasBOM(blob)).toBe(true);
-      expect(text).toEqual('sep=,\r\n"time","name","value"\r\n100,a,1');
+      expect(text).toEqual('sep=,\n"time","name","value"\r\n100,a,1');
       expect(filename).toEqual(`test-data-${dateTimeFormat(1400000000000)}.csv`);
     });
   });

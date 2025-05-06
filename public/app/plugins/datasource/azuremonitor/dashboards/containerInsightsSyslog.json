@@ -122,7 +122,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"emergency\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"emergency\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -191,7 +191,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"alert\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"alert\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -260,7 +260,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"error\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"error\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -329,7 +329,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"warning\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"warning\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -398,7 +398,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"critical\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"critical\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -467,7 +467,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"notice\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"notice\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -536,7 +536,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where SeverityLevel == \"info\"\r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize TotalErrors = count()\r\n",
+            "query": "Syslog \n| where SeverityLevel == \"info\"\n| where _ResourceId == tolower(\"$Cluster\")\n| summarize TotalErrors = count()\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -634,7 +634,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize SyslogMessages = count() by bin(TimeGenerated, 30m), SeverityLevel\r\n| order by TimeGenerated asc, SeverityLevel\r\n| render barchart with (kind=stacked)",
+            "query": "Syslog \n| where _ResourceId == tolower(\"$Cluster\")\n| summarize SyslogMessages = count() by bin(TimeGenerated, 30m), SeverityLevel\n| order by TimeGenerated asc, SeverityLevel\n| render barchart with (kind=stacked)",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -732,7 +732,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize Count = count() by ProcessName\r\n| order by Count desc ",
+            "query": "Syslog \n| where _ResourceId == tolower(\"$Cluster\")\n| summarize Count = count() by ProcessName\n| order by Count desc ",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -830,7 +830,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize Count = count() by Facility\r\n",
+            "query": "Syslog \n| where _ResourceId == tolower(\"$Cluster\")\n| summarize Count = count() by Facility\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -930,7 +930,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| summarize Count = count() by HostName",
+            "query": "Syslog \n| where _ResourceId == tolower(\"$Cluster\")\n| summarize Count = count() by HostName",
             "resources": ["$LAWorkspace"],
             "resultFormat": "time_series"
           },
@@ -1082,7 +1082,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "Syslog \r\n| where _ResourceId == tolower(\"$Cluster\")\r\n| top 50 by TimeGenerated desc\r\n| project TimeGenerated, Facility, SeverityLevel, ProcessName, SyslogMessage\r\n",
+            "query": "Syslog \n| where _ResourceId == tolower(\"$Cluster\")\n| top 50 by TimeGenerated desc\n| project TimeGenerated, Facility, SeverityLevel, ProcessName, SyslogMessage\n",
             "resources": ["$LAWorkspace"],
             "resultFormat": "table"
           },
@@ -1173,7 +1173,7 @@
             "resources": []
           },
           "azureResourceGraph": {
-            "query": "Resources \r\n| where type =~ 'microsoft.containerservice/managedclusters'\r\n| where id == \"$Cluster\"\r\n| extend props = parse_json(properties)\r\n| extend lawResourceId = tostring(props.addonProfiles.omsAgent.config.logAnalyticsWorkspaceResourceID)\r\n| extend LAWS = iff(isnotempty(lawResourceId), lawResourceId, tostring(props.addonProfiles.omsagent.config.logAnalyticsWorkspaceResourceID))\r\n| project LAWS\r\n\r\n"
+            "query": "Resources \n| where type =~ 'microsoft.containerservice/managedclusters'\n| where id == \"$Cluster\"\n| extend props = parse_json(properties)\n| extend lawResourceId = tostring(props.addonProfiles.omsAgent.config.logAnalyticsWorkspaceResourceID)\n| extend LAWS = iff(isnotempty(lawResourceId), lawResourceId, tostring(props.addonProfiles.omsagent.config.logAnalyticsWorkspaceResourceID))\n| project LAWS\n\n"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",
@@ -1204,7 +1204,7 @@
             "resources": []
           },
           "azureResourceGraph": {
-            "query": "Resources\r\n| where type =~ 'microsoft.containerservice/managedclusters'"
+            "query": "Resources\n| where type =~ 'microsoft.containerservice/managedclusters'"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",

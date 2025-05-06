@@ -69,7 +69,7 @@ export function getValuePreview(object: object, value: string): string {
     return (
       object
         .toString()
-        .replace(/[\r\n]/g, '')
+        .replace(/[\n]/g, '')
         .replace(/\{.*\}/, '') + '{…}'
     );
   }

@@ -18,7 +18,7 @@ export enum CSVHeaderStyle {
 // Subset of all parse options
 export interface CSVConfig {
   delimiter?: string; // default: ","
-  newline?: string; // default: "\r\n"
+  newline?: string; // default: "\n"
   quoteChar?: string; // default: '"'
   encoding?: string; // default: "",
   useExcelHeader?: boolean; // default: false
@@ -265,7 +265,7 @@ export function toCSV(data: DataFrame[], config?: CSVConfig): string {
 
   config = defaults(config, {
     delimiter: getLocaleDelimiter(),
-    newline: '\r\n',
+    newline: '\n',
     quoteChar: '"',
     encoding: '',
     headerStyle: CSVHeaderStyle.name,

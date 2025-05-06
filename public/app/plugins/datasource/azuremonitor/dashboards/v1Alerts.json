@@ -105,7 +105,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev)\r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev)\n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -204,7 +204,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev0\" \r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev0\" \n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -303,7 +303,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev1\" \r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev1\" \n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -402,7 +402,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev2\" \r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev2\" \n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -501,7 +501,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev3\" \r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev3\" \n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -600,7 +600,7 @@
             "timeGrain": "auto"
           },
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev4\" \r\n| summarize count()"
+            "query": "alertsmanagementresources\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev) and properties.essentials.severity == \"Sev4\" \n| summarize count()"
           },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -780,7 +780,7 @@
       "targets": [
         {
           "azureResourceGraph": {
-            "query": "alertsmanagementresources\r\n| join kind=leftouter (ResourceContainers | where type=='microsoft.resources/subscriptions' | project SubName=name, subscriptionId) on subscriptionId\r\n| where type == \"microsoft.alertsmanagement/alerts\"\r\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev)\r\nand todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\r\n| parse id with * \"alerts/\" alertId\r\n| project name, properties.essentials.severity, tostring(properties.essentials.monitorCondition), \r\ntostring(properties.essentials.alertState), todatetime(properties.essentials.lastModifiedDateTime), tostring(properties.essentials.monitorService), alertId\r\n",
+            "query": "alertsmanagementresources\n| join kind=leftouter (ResourceContainers | where type=='microsoft.resources/subscriptions' | project SubName=name, subscriptionId) on subscriptionId\n| where type == \"microsoft.alertsmanagement/alerts\"\n| where tolower(subscriptionId) == tolower(\"$sub\") and properties.essentials.targetResourceGroup in~ ($rg) and properties.essentials.monitorCondition in~ ($mc)\r\nand properties.essentials.alertState in~ ($as) and properties.essentials.severity in~ ($sev)\r\nand todatetime(properties.essentials.lastModifiedDateTime) >= $__timeFrom and todatetime(properties.essentials.lastModifiedDateTime) <= $__timeTo\n| parse id with * \"alerts/\" alertId\n| project name, properties.essentials.severity, tostring(properties.essentials.monitorCondition), \r\ntostring(properties.essentials.alertState), todatetime(properties.essentials.lastModifiedDateTime), tostring(properties.essentials.monitorService), alertId\n",
             "resultFormat": "table"
           },
           "datasource": {

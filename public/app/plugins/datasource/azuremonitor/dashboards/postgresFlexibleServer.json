@@ -114,7 +114,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Azure Database for PostgreSQL Flexible Server - Monitoring Dashboard\r\n#### - Each metric is emitted at a 1-minute interval and has up to 93 days of history.\r\n#### - For a complete list of metrics, refer to [Azure PostgreSQL Monitoring Metrics](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-monitoring)",
+        "content": "# Azure Database for PostgreSQL Flexible Server - Monitoring Dashboard\n#### - Each metric is emitted at a 1-minute interval and has up to 93 days of history.\n#### - For a complete list of metrics, refer to [Azure PostgreSQL Monitoring Metrics](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-monitoring)",
         "mode": "markdown"
       },
       "transparent": true,

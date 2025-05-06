@@ -733,7 +733,7 @@ await_build() {
     i=$((i + 1))
 
     if ${req} "${url}"; then
-      printf '\r\nView documentation locally:\r\n'
+      printf '\r\nView documentation locally:\n'
       for x in ${url_src_dst_vers}; do
         IFS='^' read -r url _ _ <<POSIX_HERESTRING
 $x
@@ -741,18 +741,18 @@ POSIX_HERESTRING
 
         if [ -n "${url}" ]; then
           if [ "${url}" != arbitrary ]; then
-            printf '\r  %s\r\n' "${url}"
+            printf '\r  %s\n' "${url}"
           fi
         fi
       done
-      printf '\r\nPress Ctrl+C to stop the server\r\n'
+      printf '\r\nPress Ctrl+C to stop the server\n'
 
       unset i max req url
       return
     fi
   done
 
-  printf '\r\n'
+  printf '\n'
   errr 'The build was interrupted or a build error occurred, check the previous logs for possible causes.'
   note 'You might need to use Ctrl+C to end the process.'
 
@@ -761,16 +761,16 @@ POSIX_HERESTRING
 
 debg() {
   if [ -n "${DEBUG}" ]; then
-    printf 'DEBG: %s\r\n' "$1" >&2
+    printf 'DEBG: %s\n' "$1" >&2
   fi
 }
 
 errr() {
-  printf 'ERRR: %s\r\n' "$1" >&2
+  printf 'ERRR: %s\n' "$1" >&2
 }
 
 note() {
-  printf 'NOTE: %s\r\n' "$1" >&2
+  printf 'NOTE: %s\n' "$1" >&2
 }
 
 url_src_dst_vers="$(url_src_dst_vers "$@")"
@@ -841,7 +841,7 @@ POSIX_HERESTRING
 case "${image}" in
   'grafana/vale')
     proj="$(new_proj "$1")"
-    printf '\r\n'
+    printf '\n'
     IFS='' read -r cmd <<EOF
     ${PODMAN} run \
                 --init \

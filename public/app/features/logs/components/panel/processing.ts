@@ -53,7 +53,7 @@ const preProcessLog = (
     body = escapeUnescapedString(body);
   }
   // Turn it into a single-line log entry for the list
-  body = body.replace(/(\r\n|\n|\r)/g, '');
+  body = body.replace(/(\n|\n|\r)/g, '');
 
   return {
     ...log,

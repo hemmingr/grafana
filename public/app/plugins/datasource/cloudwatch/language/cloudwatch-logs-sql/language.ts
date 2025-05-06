@@ -509,7 +509,7 @@ export const language: CloudWatchLanguage = {
       ],
       [/[<>=!%&+\-*/|~^]/, 'operator'],
     ],
-    whitespace: [[/[\s\t\r\n]+/, 'white']],
+    whitespace: [[/[\s\t\n]+/, 'white']],
     comments: [
       [/--+.*/, 'comment'],
       [/\/\*/, { token: 'comment.quote', next: '@comment' }],

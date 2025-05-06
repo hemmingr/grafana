@@ -236,7 +236,7 @@ export const language = {
       [/[^(,)]/, 'tag'],
       [/\)/, 'identifier', '@pop'],
     ],
-    whitespace: [[/[ \t\r\n]+/, 'white']],
+    whitespace: [[/[ \t\n]+/, 'white']],
   },
 };
 // noinspection JSUnusedGlobalSymbols

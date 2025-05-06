@@ -126,7 +126,7 @@ const restructureLog = (
   }
   // With wrapping disabled, we want to turn it into a single-line log entry unless the line is expanded
   if (!wrapLogMessage && !expanded) {
-    line = line.replace(/(\r\n|\n|\r)/g, '');
+    line = line.replace(/(\n|\n|\r)/g, '');
   }
   return line;
 };

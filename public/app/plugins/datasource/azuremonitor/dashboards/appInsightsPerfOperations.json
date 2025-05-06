@@ -1339,7 +1339,7 @@
                   {
                     "targetBlank": true,
                     "title": "Open Trace Details",
-                    "url": "/explore?left={\r\n\t\"datasource\": \"${ds}\",\r\n\t\"queries\": [{\r\n\t\t\"azureTraces\": {\r\n\r\n\t\t\t\"operationId\": \"${__data.fields.OperationID}\",\r\n\r\n\t\t\t\"resources\": [\"/subscriptions/${sub}/resourceGroups/${rg}/providers/Microsoft.Insights/components/${res}\"],\r\r\n\r\n\t\t\t\"resultFormat\": \"trace\"\r\n\r\n\r\n\r\n\r\n\t\t},\r\n\t\t\"datasource\": \"${ds}\",\r\n\t\t\"refId\": \"A\",\r\n\r\n\t\t\"queryType\": \"Azure Traces\"\r\n\t}],\r\n\t\"range\": {\r\n\t\t\"from\": \"${__from}\",\r\n\t\t\"to\": \"${__to}\"\r\n\t}\r\n}"
+                    "url": "/explore?left={\n\t\"datasource\": \"${ds}\",\n\t\"queries\": [{\n\t\t\"azureTraces\": {\n\n\t\t\t\"operationId\": \"${__data.fields.OperationID}\",\n\n\t\t\t\"resources\": [\"/subscriptions/${sub}/resourceGroups/${rg}/providers/Microsoft.Insights/components/${res}\"],\r\n\n\t\t\t\"resultFormat\": \"trace\"\n\n\n\n\n\t\t},\n\t\t\"datasource\": \"${ds}\",\n\t\t\"refId\": \"A\",\n\n\t\t\"queryType\": \"Azure Traces\"\n\t}],\n\t\"range\": {\n\t\t\"from\": \"${__from}\",\n\t\t\"to\": \"${__to}\"\n\t}\n}"
                   }
                 ]
               }
@@ -1566,7 +1566,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "requests\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| summarize count() by operation_Name\r\n",
+            "query": "requests\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| summarize count() by operation_Name\n",
             "resource": "/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },
@@ -1596,7 +1596,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "requests\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| where (\"All\" in ($operation_name) or operation_Name in ($operation_name))\r\n| top 1 by duration asc\r\n| project tostring(duration)\r\n",
+            "query": "requests\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| where (\"All\" in ($operation_name) or operation_Name in ($operation_name))\n| top 1 by duration asc\n| project tostring(duration)\n",
             "resource": "/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },
@@ -1626,7 +1626,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "requests\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| where (\"All\" in ($operation_name) or operation_Name in ($operation_name))\r\n| top 1 by duration\r\n| project tostring(duration)\r\n",
+            "query": "requests\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| where (\"All\" in ($operation_name) or operation_Name in ($operation_name))\n| top 1 by duration\n| project tostring(duration)\n",
             "resource": "/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },

@@ -233,7 +233,7 @@
       "targets": [
         {
           "azureLogAnalytics": {
-            "query": "let minDuration = iif(isempty(\"$min_duration\"), \"0\", \"$min_duration\");\nlet maxDuration = iif(isempty(\"$max_duration\"), \"0\", \"$max_duration\");\n\nset truncationmaxrecords=10000;set truncationmaxsize=67108864;set truncationmaxrecords=10000;set truncationmaxsize=67108864;\r\ndependencies\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| where duration >= todouble(minDuration) and duration <= todouble(maxDuration)\r\n| summarize Count=sum(itemCount), AVG_Duration=sum(duration * itemCount)/sum(itemCount), Duration_95th=percentile(duration,95) by type\r\n| sort by Count desc\r\n| take 3",
+            "query": "let minDuration = iif(isempty(\"$min_duration\"), \"0\", \"$min_duration\");\nlet maxDuration = iif(isempty(\"$max_duration\"), \"0\", \"$max_duration\");\n\nset truncationmaxrecords=10000;set truncationmaxsize=67108864;set truncationmaxrecords=10000;set truncationmaxsize=67108864;\r\ndependencies\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| where duration >= todouble(minDuration) and duration <= todouble(maxDuration)\n| summarize Count=sum(itemCount), AVG_Duration=sum(duration * itemCount)/sum(itemCount), Duration_95th=percentile(duration,95) by type\n| sort by Count desc\n| take 3",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"],
             "resultFormat": "table"
           },
@@ -1496,7 +1496,7 @@
                   {
                     "targetBlank": true,
                     "title": "Open Trace Details",
-                    "url": "/explore?left={\r\n\t\"datasource\": \"${ds}\",\r\n\t\"queries\": [{\r\n\t\t\"azureTraces\": {\r\n\r\n\t\t\t\"operationId\": \"${__data.fields.OperationID}\",\r\n\r\n\t\t\t\"resources\": [\"/subscriptions/${sub}/resourceGroups/${rg}/providers/${ns}/${res}\"],\r\r\n\r\n\t\t\t\"resultFormat\": \"trace\"\r\n\r\n\r\n\r\n\r\n\t\t},\r\n\t\t\"datasource\": \"${ds}\",\r\n\t\t\"refId\": \"A\",\r\n\r\n\t\t\"queryType\": \"Azure Traces\"\r\n\t}],\r\n\t\"range\": {\r\n\t\t\"from\": \"${__from}\",\r\n\t\t\"to\": \"${__to}\"\r\n\t}\r\n}"
+                    "url": "/explore?left={\n\t\"datasource\": \"${ds}\",\n\t\"queries\": [{\n\t\t\"azureTraces\": {\n\n\t\t\t\"operationId\": \"${__data.fields.OperationID}\",\n\n\t\t\t\"resources\": [\"/subscriptions/${sub}/resourceGroups/${rg}/providers/${ns}/${res}\"],\r\n\n\t\t\t\"resultFormat\": \"trace\"\n\n\n\n\n\t\t},\n\t\t\"datasource\": \"${ds}\",\n\t\t\"refId\": \"A\",\n\n\t\t\"queryType\": \"Azure Traces\"\n\t}],\n\t\"range\": {\n\t\t\"from\": \"${__from}\",\n\t\t\"to\": \"${__to}\"\n\t}\n}"
                   }
                 ]
               }
@@ -1745,7 +1745,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "dependencies\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\r\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target)\r\n| summarize count() by [\"Dependency Name\"]\r\n",
+            "query": "dependencies\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target)\n| summarize count() by [\"Dependency Name\"]\n",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },
           "queryType": "Azure Log Analytics",
@@ -1773,7 +1773,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "dependencies\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\r\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target), duration\r\n| where (\"All\" in ($dependency) or [\"Dependency Name\"] in ($dependency))\r\n| top 1 by duration asc\r\n| project tostring(duration)",
+            "query": "dependencies\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target), duration\n| where (\"All\" in ($dependency) or [\"Dependency Name\"] in ($dependency))\n| top 1 by duration asc\n| project tostring(duration)",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },
           "queryType": "Azure Log Analytics",
@@ -1801,7 +1801,7 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "dependencies\r\n| where $__timeFilter(timestamp)\r\n| where client_Type != \"Browser\"\r\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\r\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target), duration\r\n| where (\"All\" in ($dependency) or [\"Dependency Name\"] in ($dependency))\r\n| top 1 by duration desc\r\n| project tostring(duration)",
+            "query": "dependencies\n| where $__timeFilter(timestamp)\n| where client_Type != \"Browser\"\n| extend type=iff(tolower(type) == \"http (tracked component)\", \"HTTP\", type), target=tostring(split(target, \" | cid-v1\")[0])\n| project [\"Dependency Name\"] = strcat(type, \": \", name, \" \", target), duration\n| where (\"All\" in ($dependency) or [\"Dependency Name\"] in ($dependency))\n| top 1 by duration desc\n| project tostring(duration)",
             "resources": ["/subscriptions/$sub/resourceGroups/$rg/providers/$ns/$res"]
           },
           "queryType": "Azure Log Analytics",

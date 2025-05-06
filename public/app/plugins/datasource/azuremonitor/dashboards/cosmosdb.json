@@ -4932,7 +4932,7 @@
         "options": [],
         "query": {
           "azureResourceGraph": {
-            "query": "resources\r\n|  where [\"type\"] =~ \"Microsoft.DocumentDb/databaseAccounts\"\r\n| distinct resourceGroup"
+            "query": "resources\n|  where [\"type\"] =~ \"Microsoft.DocumentDb/databaseAccounts\"\n| distinct resourceGroup"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",
@@ -4963,7 +4963,7 @@
         "options": [],
         "query": {
           "azureResourceGraph": {
-            "query": "resources\r\n| where [\"type\"] =~ \"Microsoft.DocumentDb/databaseAccounts\"\r\n| distinct [\"type\"]"
+            "query": "resources\n| where [\"type\"] =~ \"Microsoft.DocumentDb/databaseAccounts\"\n| distinct [\"type\"]"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",

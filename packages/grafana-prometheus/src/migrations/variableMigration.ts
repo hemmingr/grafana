@@ -133,5 +133,5 @@ export function migrateVariableEditorBackToVariableSupport(QueryVariable: PromVa
 
 // allow line breaks in query result textarea
 function removeLineBreaks(input?: string) {
-  return input ? input.replace(/[\r\n]+/gm, '') : '';
+  return input ? input.replace(/[\n]+/gm, '') : '';
 }

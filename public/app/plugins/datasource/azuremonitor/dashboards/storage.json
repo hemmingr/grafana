@@ -6791,7 +6791,7 @@
         "options": [],
         "query": {
           "azureResourceGraph": {
-            "query": "resources\r\n| where [\"type\"] =~ \"Microsoft.Storage/storageAccounts\"\r\n| distinct [\"type\"]"
+            "query": "resources\n| where [\"type\"] =~ \"Microsoft.Storage/storageAccounts\"\n| distinct [\"type\"]"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",
@@ -6817,7 +6817,7 @@
         "options": [],
         "query": {
           "azureResourceGraph": {
-            "query": "resources\r\n| where [\"type\"] =~ \"Microsoft.Storage/storageAccounts\"\r\n| distinct resourceGroup"
+            "query": "resources\n| where [\"type\"] =~ \"Microsoft.Storage/storageAccounts\"\n| distinct resourceGroup"
           },
           "queryType": "Azure Resource Graph",
           "refId": "A",

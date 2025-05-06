@@ -12,7 +12,7 @@ const OLD_ANNOTATION: AnnotationQuery<AzureMonitorQuery> = {
 
   queryType: 'Azure Log Analytics',
   subscription: 'abc-123-def-456',
-  rawQuery: 'AzureActivity\r\n| where $__timeFilter() \r\n| project TimeGenerated, Text=OperationName',
+  rawQuery: 'AzureActivity\n| where $__timeFilter() \n| project TimeGenerated, Text=OperationName',
   workspace:
     '/subscriptions/abc-123-def-456/resourcegroups/our-datasource/providers/microsoft.operationalinsights/workspaces/azureactivitylog',
 
@@ -36,7 +36,7 @@ const NEW_ANNOTATION: AnnotationQuery<AzureMonitorQuery> = {
     refId: 'Anno',
     queryType: AzureQueryType.LogAnalytics,
     azureLogAnalytics: {
-      query: 'AzureActivity\r\n| where $__timeFilter() \r\n| project TimeGenerated, Text=OperationName',
+      query: 'AzureActivity\n| where $__timeFilter() \n| project TimeGenerated, Text=OperationName',
       resources: [
         '/subscriptions/abc-123-def-456/resourcegroups/our-datasource/providers/microsoft.operationalinsights/workspaces/azureactivitylog',
       ],
