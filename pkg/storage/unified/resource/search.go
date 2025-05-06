@@ -96,6 +96,7 @@ type searchSupport struct {
 	builders     *builderCache
 	initWorkers  int
 	initMinSize  int
+	broadcaster  Broadcaster[*WrittenEvent]
 }
 
 var (
@@ -381,7 +382,7 @@ func (s *searchSupport) init(ctx context.Context) error {
 
 	// Now start listening for new events
 	watchctx := context.Background() // new context?
-	events, err := s.storage.WatchWriteEvents(watchctx)
+	events, err := s.broadcaster.Subscribe(watchctx)
 	if err != nil {
 		return err
 	}
